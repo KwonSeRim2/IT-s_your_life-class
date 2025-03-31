@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>hello</h1>
+    <!-- 미디어쿼리
+    미디어에 따른 쿼리 -->
+    <!-- css에서 화면 크기 방향 해상도 기기 종류등에 따른 스타일을 적용할 수 있게 해주는 기능 -->
+
+    <!-- 반응형 디자인과 적용형 디자인 -->
+    <!-- 반응형 코딩: 각각의 해상도의 각각의 기준 없이 퍼센트로 적용 -->
+
+    <!-- 적용형 코딩: 특절 해상도에 따른 기준을 다 각각 코딩 -->
+
+    <!-- 미디어 타입 -->
+    <!-- all: 모든 타입에 적용, screen: 장치, print: 출력장치, speech:음성 출력 장치 -->
+
+    <!-- 조건 -->
+    <!-- min-width, max-width, (min-height, max-height, orientation -일 필요 없음) -->
+
+    <style>
+      /* 스마트폰 */
+      @media screen {
+        h1 {
+          color: blue;
+        }
+      }
+
+      /* 테블릿 */
+      @media screen and (min-width: 768px) {
+        h1 {
+          color: green;
+        }
+      }
+
+      /* 데스크탑 */
+      @media screen and (min-width: 1024px) {
+        h1 {
+          color: red;
+        }
+      }
+    </style>
+  </body>
+</html>
