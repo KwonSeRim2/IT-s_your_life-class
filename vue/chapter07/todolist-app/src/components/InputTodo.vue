@@ -17,20 +17,16 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'InputTodo',
-  data() {
-    return { todo: '' };
-  },
-  emits: ['add-todo'],
-  methods: {
-    addTodoHandler() {
-      if (this.todo.length >= 3) {
-        this.$emit('add-todo', this.todo);
-        this.todo = '';
-      }
-    },
-  },
+<script setup>
+import { ref } from 'vue';
+
+const todo = ref('');
+const emit = defineEmits(['add-todo']);
+
+const addTodoHandler = () => {
+  if (todo.value.length >= 2) {
+    emit('add-todo', todo.value); // 부모 컴포넌트로 이벤트 전달
+    todo.value = ''; // 입력 필드 초기화
+  }
 };
 </script>
