@@ -17,8 +17,8 @@
         <div class="flex-grow-1"></div>
         <button
           class="d-flex justify-content-end"
-          style="background-color: #1e1e1e"
-          @click="emit('delete', { index })"
+          style="background-color: transparent; border: 0"
+          @click="emit('delete', index)"
         >
           ❌
         </button>
@@ -46,6 +46,8 @@ const imo = (item) => {
     return '🍭';
   } else if (item.item.includes('점심')) {
     return '🍽';
+  } else {
+    return '🧵';
   }
 };
 </script>
