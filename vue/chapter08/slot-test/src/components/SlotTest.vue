@@ -7,24 +7,27 @@
     <!-- v-for을 사용해 items 배열의 각 항목에 대해 CheckBox1 컴포넌트를 생성 -->
     <!-- key는 각 항목의 id로 설정, props로 id, label, checked 값 전달 -->
     <!-- 체크박스 상태가 변경되면 'check-changed' 이벤트가 발생하고 CheckBoxChanged 메서드를 호출 -->
-    <CheckBox1
+    <CheckBox2
       v-for="item in items"
       :key="item.id"
       :id="item.id"
       :label="item.label"
       :checked="item.checked"
       @check-changed="CheckBoxChanged"
-    >
-    </CheckBox1>
+      ><span v-if="item.checked" style="color: blue; text-decoration: underline"
+        ><i>{{ item.label }}</i></span
+      >
+      <span v-else style="color: gray">{{ item.label }}</span>
+    </CheckBox2>
   </div>
 </template>
 
 <script>
-import CheckBox1 from './CheckBox1.vue'; // CheckBox1 컴포넌트 가져오기
+import CheckBox2 from './CheckBox1.vue'; // CheckBox1 컴포넌트 가져오기
 
 export default {
   name: 'NoSlotTest', // 컴포넌트 이름
-  components: { CheckBox1 }, // CheckBox1 컴포넌트 등록
+  components: { CheckBox2 }, // CheckBox1 컴포넌트 등록
   data() {
     return {
       // items 배열: 프론트엔드 기술들의 체크박스 상태를 저장 (id, checked 상태, label)

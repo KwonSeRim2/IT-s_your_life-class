@@ -1,13 +1,8 @@
 <template>
   <div>
-    <!-- 제목 출력 -->
     <h3>당신이 경험한 프론트 엔드 기술은?(첫번째:Slot사용(X))</h3>
 
-    <!-- CheckBox1 컴포넌트를 사용하여 체크박스 리스트 출력 -->
-    <!-- v-for을 사용해 items 배열의 각 항목에 대해 CheckBox1 컴포넌트를 생성 -->
-    <!-- key는 각 항목의 id로 설정, props로 id, label, checked 값 전달 -->
-    <!-- 체크박스 상태가 변경되면 'check-changed' 이벤트가 발생하고 CheckBoxChanged 메서드를 호출 -->
-    <CheckBox1
+    <CheckBox3
       v-for="item in items"
       :key="item.id"
       :id="item.id"
@@ -15,16 +10,29 @@
       :checked="item.checked"
       @check-changed="CheckBoxChanged"
     >
-    </CheckBox1>
+      <template #icon>
+        <i v-if="item.checked" class="far fa-grin-beam"></i>
+        <i v-else class="far fa-frown"></i>
+      </template>
+      <template #label>
+        <span
+          v-if="item.checked"
+          style="color: blue; text-decoration: underline"
+        >
+          <i>{{ item.label }}</i>
+        </span>
+        <span v-else style="color: gray">{{ item.label }}</span>
+      </template>
+    </CheckBox3>
   </div>
 </template>
 
 <script>
-import CheckBox1 from './CheckBox1.vue'; // CheckBox1 컴포넌트 가져오기
+import CheckBox3 from './CheckBox3.vue';
 
 export default {
   name: 'NoSlotTest', // 컴포넌트 이름
-  components: { CheckBox1 }, // CheckBox1 컴포넌트 등록
+  components: { CheckBox3 }, // CheckBox1 컴포넌트 등록
   data() {
     return {
       // items 배열: 프론트엔드 기술들의 체크박스 상태를 저장 (id, checked 상태, label)
@@ -46,3 +54,6 @@ export default {
   },
 };
 </script>
+<style>
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css');
+</style>
