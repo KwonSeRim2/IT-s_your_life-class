@@ -3,7 +3,7 @@
     <!-- <InputName :name="searchName" @update:name="changeSearchName"></InputName>
     <h3>검색어: {{ searchName }}</h3> -->
 
-    v-model 디렉티브를 사용하면 이벤트 수신 처리를 하지 않아도 됨
+    <!-- v-model 디렉티브를 사용하면 이벤트 수신 처리를 하지 않아도 됨 -->
     <InputName v-model:name="searchName"></InputName>
     <h3>검색어: {{ searchName }}</h3>
   </div>
