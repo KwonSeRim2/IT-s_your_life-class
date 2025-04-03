@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col-sm-5 border p-3 m-3" v-for="s in studyList" :key="s.id">
-      <router-link :to="'/' + s.id">
+      <router-link :to="'/sudies/' + s.id">
         <div class="pb-2">
           <b>{{ s.title }}</b>
         </div>

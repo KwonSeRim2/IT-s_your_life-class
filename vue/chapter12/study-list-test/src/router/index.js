@@ -1,4 +1,3 @@
-import Home from '@/pages/Home.vue';
 import Studies from '@/pages/Studies.vue';
 import Study from '@/pages/Study.vue';
 import { createRouter, createWebHistory } from 'vue-router';
@@ -9,8 +8,7 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'homw',
-      component: Home,
+      redirect: '/sudies',
     },
     {
       path: '/sudies',
@@ -19,7 +17,7 @@ const router = createRouter({
     },
     {
       path: '/sudies/:id',
-      name: 'sudies',
+      name: 'sudies/id',
       component: Study,
     },
   ],
