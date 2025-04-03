@@ -37,4 +37,7 @@ defineProps({
     required: true,
   },
 });
+
+const router = useRouter();
+const { deleteTodo, toggleDone } = inject('actions');
 </script>
