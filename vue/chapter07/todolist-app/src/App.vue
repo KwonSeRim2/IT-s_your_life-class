@@ -1,66 +1,95 @@
 <template>
-  <div id="app" class="container">
-    <div class="card card-body bg-light">
-      <div classe="title">:: Todolist App</div>
-    </div>
-    <div class="card card-default card-borderless">
-      <div class="card-body">
-        <InputTodo @add-todo="addTodo" />
-        <TodoList
-          :todoList="state.todoList"
-          @delete-todo="deleteTodo"
-          @toggle-completed="toggleCompleted"
-        />
-      </div>
-    </div>
+  <div class="container">
+    <Header> </Header>
+    <router-view></router-view>
   </div>
 </template>
 
 <script setup>
-import { reactive, onMounted } from 'vue';
-import TodoList from './components/TodoList.vue';
-import InputTodo from './components/InputTodo.vue';
+import { useRouter } from 'vue-router';
+import { reactive, computed, provide } from 'vue';
+import Header from '@/components/Header.vue';
+import axios from 'axios';
 
-const ts = new Date().getTime();
-const state = reactive({ todoList: [] });
-
-onMounted(() => {
-  state.todoList.push({ id: ts, todo: '자전거 타기', completed: false });
-  state.todoList.push({
-    id: ts + 1,
-    todo: '딸과 공원 산책',
-    completed: false,
-  });
-  state.todoList.push({
-    id: ts + 2,
-    todo: '일요일 애견 카페',
-    completed: false,
-  });
-  state.todoList.push({
-    id: ts + 3,
-    todo: 'Vue 원고 집필',
-    completed: false,
-  });
-});
-
-const addTodo = (todo) => {
-  console.log('App.vue에서 addTodo 호출됨:', todo);
-  if (todo.length >= 2) {
-    state.todoList.push({
-      id: new Date().getTime(),
-      todo: todo,
-      completed: false,
-    });
-    console.log('현재 Todo 리스트:', state.todoList);
+const BASEURL = '/api/todos';
+const states = reactive({ todoList: [] });
+const fetchTodoList = async () => {
+  try {
+    const response = await axios.get(BASEURL);
+    if (response.status === 200) {
+      states.todoList = response.data;
+    } else {
+      console.log('데이터 조회 실패');
+    }
+  } catch (error) {
+    console.log('에러:' + error);
+  }
+};
+//새로운 todoList를 추가합니다.
+const addTodo = async ({ todo, desc }, successCallback) => {
+  try {
+    const payload = { todo, desc };
+    const response = await axios.post(BASEURL, payload);
+    if (response.status === 201) {
+      states.todoList.push({ ...response.data, done: false }); //객체 참조 문제제
+    } else {
+      console.log('추가 실패');
+    }
+  } catch (error) {
+    console.log('에러 발생: ' + error);
   }
 };
 
-const deleteTodo = (id) => {
-  let index = state.todoList.findIndex((item) => id === item.id);
-  state.todoList.splice(index, 1);
+const updateTodo = async ({ id, todo, desc, done }, successCallback) => {
+  try {
+    const payload = { id, todo, desc, done };
+    const response = await axios.put(BASEURL + `/${id}`, payload);
+    if (response.status === 200) {
+      // 사용자에게 받아온 id와 같은 id찾기
+      let index = states.todoList.findIndex((todo) => todo.id === id);
+      states.todoList[index] = payload;
+      successCallback;
+    } else {
+      console.log('수정 완료');
+    }
+  } catch (error) {
+    console.log('에러 발생: ' + error);
+  }
 };
-const toggleCompleted = (id) => {
-  let index = state.todoList.findIndex((item) => id === item.id);
-  state.todoList[index].completed = !state.todoList[index].completed;
+
+const deleteTodo = async ({ id }) => {
+  try {
+    const response = await axios.delete(BASEURL + `/${id}`);
+    if (response.status === 200) {
+      // 삭제할 todo가 todolist에서 몇변째 인텍스인지 id를 통해 검색
+      let index = states.todoList.findIndex((todo) => todo.id === id);
+      states.todoList.splice(index, 1);
+    } else {
+      console.log('todo 삭제 실패');
+    }
+  } catch (error) {
+    console.log('에러 발생: ' + error);
+  }
 };
+
+const toggleDone = async ({ id }) => {
+  try {
+    let todo = states.todoList.find((todo) => todo.id === id);
+    let payload = { ...todo, done: !todo.done };
+    const response = await axios.put(BASEURL + `/${id}`, payload);
+    if (response.status === 200) {
+      todo.done = payload.done;
+    } else {
+      console.log('Todo 완료 변경 실패');
+    }
+  } catch (error) {
+    console.log('에러 발생: ' + error);
+  }
+};
+
+provide(
+  'todoList',
+  computed(() => states.todoList)
+);
+provide('actions', { addTodo, updateTodo, deleteTodo, toggleDone });
 </script>
