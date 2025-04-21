@@ -1,0 +1,14 @@
+package ch08.sec02;
+
+public class RemoteControlExample {
+    public static void main(String[] args) {
+        RemoteControl rc;
+
+        rc = new Television();
+        rc.turnOn(); //자식인 Telecision의 turnOn()
+
+        rc = new Audio();
+        rc.turnOn(); // 자식인 Audio의 turnOn()
+    }
+
+}
