@@ -6,7 +6,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ComponentScan(basePackages = {"org.scoula.domain", "org.scoula.service"})
+@ComponentScan("org.scoula")
 public class ProjectConfig {
 //    @Bean(name = "꼬미")
 //    public Dog dog1(){

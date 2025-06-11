@@ -7,20 +7,19 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Component
 public class RescueCenter {
-    private final Dog dog;
     private List<Dog> dogs;
     private Map<String, Integer> priorityMap = new HashMap<>();
 
     @Autowired
-    public RescueCenter(List<Dog> dogs, Dog dog) {
+    public RescueCenter(List<Dog> dogs) {
         this.dogs = dogs;
-        this.dog = dog;
         priorityMap.put("해피", 1);
         priorityMap.put("밤비", 2);
         priorityMap.put("꼬미", 3);
@@ -29,7 +28,7 @@ public class RescueCenter {
 
     @PostConstruct
     public void init() {
-        dogs.sort();
+        dogs.sort(Comparator.comparingInt(priorityMap.get()));
     }
 
 
