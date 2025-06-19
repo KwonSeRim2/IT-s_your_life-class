@@ -44,5 +44,7 @@ public class BoardController {
     }
 
     @DeleteMapping("/{no}")
-    public ResponseEntity<BoardDTO> delete
+    public ResponseEntity<BoardDTO> delete(@PathVariable Long no){
+        return ResponseEntity.ok(service.delete(no));
+    }
 }
