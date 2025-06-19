@@ -1,10 +1,9 @@
-package org.scoula.config;
+package org.scoula.sample.service;
 
-import lombok.extern.java.Log;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.scoula.sample.service.SampleService;
+import org.scoula.config.RootConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -14,7 +13,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {RootConfig.class})
 @Log4j2
-class RootConfigTest {
+class SampleServiceTest {
+
     @Autowired
     private SampleService service;
 
@@ -27,6 +27,4 @@ class RootConfigTest {
     public void addError()throws Exception{
         log.info(service.doAdd("123", "ABC"));
     }
-
-
 }

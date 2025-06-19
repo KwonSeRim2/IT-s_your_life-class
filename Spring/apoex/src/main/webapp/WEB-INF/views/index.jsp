@@ -41,16 +41,16 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th>채팅 메시지</th>
+                    <th>채팅메 시 지</th>
                 </tr>
                 </thead>
-                <tbody id="chat-messages">
+                <tbody id="chat-messages"
+                >
                 </tbody>
             </table>
         </div>
     </div>
 </div>
 <script src="/resources/js/stomp.js"></script>
-
 </body>
 </html>

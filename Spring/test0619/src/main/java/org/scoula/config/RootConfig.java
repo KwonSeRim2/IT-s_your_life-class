@@ -6,10 +6,9 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @Configuration
 @ComponentScan(basePackages = {
-        "org.scoula.advice", //aop advice 클래스 스캔
-        "org.scoula.sample.service" //서비스 컴포넌트 스캔
-})
-@EnableAspectJAutoProxy //aspect 기반 aop자동 프록시 생성 활성화
+        "org.scoula.aop"
+} )
+@EnableAspectJAutoProxy
 public class RootConfig {
 
 }

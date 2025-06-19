@@ -12,6 +12,9 @@ import org.springframework.stereotype.Controller;
 @Controller
 @Log4j2
 public class ChatController {
+
+    //클 -> 서버 : /app/hello로 메시지 전송
+    // 서버 -> 구독자: /topic/greetions로 브로드케스트
     @MessageMapping("/hello")
     @SendTo("/topic/greetings")
     public GreetingMessage greeting(GreetingMessage message) throws Exception{
