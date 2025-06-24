@@ -25,6 +25,8 @@ public class ServletConfig implements WebMvcConfigurer {
         registry
                 .addResourceHandler("/resources/**")
                 .addResourceLocations("/resources/");
+
+
     }
 
     @Override
@@ -39,6 +41,7 @@ public class ServletConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    MultipartResolver multipartResolver(){return new StandardServletMultipartResolver();
+    MultipartResolver multipartResolver() {
+        return new StandardServletMultipartResolver();
     }
 }

@@ -25,6 +25,18 @@ public class ServletConfig implements WebMvcConfigurer {
         registry
                 .addResourceHandler("/resources/**")
                 .addResourceLocations("/resources/");
+
+        // Swagger UI 리소스를 위한 핸들러 설정
+        registry.addResourceHandler("/swagger-ui.html")
+                .addResourceLocations("classpath:/META-INF/resources/");
+// Swagger WebJar 리소스 설정
+        registry.addResourceHandler("/webjars/**")
+                .addResourceLocations("classpath:/META-INF/resources/webjars/");
+// Swagger 리소스 설정
+        registry.addResourceHandler("/swagger-resources/**")
+                .addResourceLocations("classpath:/META-INF/resources/");
+        registry.addResourceHandler("/v2/api-docs")
+                .addResourceLocations("classpath:/META-INF/resources/");
     }
 
     @Override
@@ -39,6 +51,7 @@ public class ServletConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    MultipartResolver multipartResolver(){return new StandardServletMultipartResolver();
+    MultipartResolver multipartResolver() {
+        return new StandardServletMultipartResolver();
     }
 }

@@ -1,25 +1,32 @@
 package org.scoula.board.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.scoula.board.domain.BoardAttachmentVO;
 import org.scoula.board.dto.BoardDTO;
 import org.scoula.board.service.BoardService;
 import org.scoula.common.util.UploadFiles;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.util.List;
 
 @Log4j2
 @Controller
 @RequestMapping("/board")
 @RequiredArgsConstructor
-
 public class BoardController {
+
+
     final private BoardService service;
+
 
     @GetMapping("/list")
     public void list(Model model) {

@@ -25,6 +25,8 @@ tasks.withType(JavaCompile) {
 
 
 dependencies {
+
+
   // 💾 데이터베이스 관련 의존성
   implementation 'com.mysql:mysql-connector-j:8.1.0' // MySQL JDBC 드라이버
   implementation 'com.zaxxer:HikariCP:2.7.4'         // HikariCP 커넥션 풀

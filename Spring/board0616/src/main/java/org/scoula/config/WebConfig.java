@@ -29,7 +29,9 @@ public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitiali
     @Override
     protected String[] getServletMappings() {
         // 모든 요청을 DispatcherServlet이 처리
-        return new String[]{"/"};
+        return new String[]{
+                "/",
+        };
     }
 
     // 한글 POST 요청 인코딩 필터 설정
