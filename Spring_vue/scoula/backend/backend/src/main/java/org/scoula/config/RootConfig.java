@@ -18,27 +18,43 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
+
 @Configuration
-@PropertySource({"classpath:/application.properties"})// 설정 파일 위치 지정
-@MapperScan(basePackages = {"org.scoula.board.mapper", "org.scoula.member.mapper"}) //매퍼 인터페이스 컴색
-@ComponentScan(basePackages = {"org.scoula.board.service", "org.scoula.member.service"})
+@PropertySource({"classpath:/application.properties"}) // 프로퍼티 파일 로드
+@MapperScan(basePackages = {"org.scoula.board.mapper", "org.scoula.member.mapper" }) // MyBatis 매퍼 스캔
+@ComponentScan(basePackages = {"org.scoula.board.service","org.scoula.member.service"}) // 서비스 컴포넌트 스캔
 @Log4j2
-@EnableTransactionManagement //트랜잭션 어노태이션 활성화
+@EnableTransactionManagement // 트랜잭션 어노테이션 활성화
 public class RootConfig {
-    @Value("${jdbc.driver}") String driver;
-    @Value("${jdbc.url}") String url;
-    @Value("${jdbc.username}") String username;
-    @Value("${jdbc.password}") String password;
 
+    // application.properties에서 값 주입
+    @Value("${jdbc.driver}")
+    String driver;
+
+    @Value("${jdbc.url}")
+    String url;
+
+    @Value("${jdbc.username}")
+    String username;
+
+    @Value("${jdbc.password}")
+    String password;
+
+    /**
+     * 커넥션 풀(DataSource) 빈 등록
+     * - HikariConfig에 DB 연결 정보 설정
+     * - HikariDataSource 생성 후 반환
+     */
     @Bean
-    public DataSource dataSource(){
+    public DataSource dataSource() {
+        // Hikari 설정 객체 생성
         HikariConfig config = new HikariConfig();
+        config.setDriverClassName(driver);      // 드라이버 클래스 설정
+        config.setJdbcUrl(url);                 // JDBC URL 설정
+        config.setUsername(username);           // DB 사용자 이름 설정
+        config.setPassword(password);           // DB 비밀번호 설정
 
-        config.setDriverClassName(driver);
-        config.setJdbcUrl(url);
-        config.setUsername(username);
-        config.setPassword(password);
-
+        // 위 설정을 기반으로 DataSource 생성
         HikariDataSource dataSource = new HikariDataSource(config);
         return dataSource;
     }
@@ -46,21 +62,34 @@ public class RootConfig {
     @Autowired
     ApplicationContext applicationContext;
 
+    /**
+     * MyBatis의 SqlSessionFactory 빈 등록
+     * - mybatis-config.xml 설정을 읽고
+     * - DataSource를 주입받아 SQL 세션 팩토리를 생성
+     */
     @Bean
     public SqlSessionFactory sqlSessionFactory() throws Exception {
         SqlSessionFactoryBean sqlSessionFactory = new SqlSessionFactoryBean();
 
-        //mubatis 설정 파일(xml) 의치 지정
-        sqlSessionFactory.setConfigLocation(applicationContext.getResource("classpath:/mybatis-config.xml"));
-        //커넥션 풀 설정 주입
+        // MyBatis 설정 파일(xml) 위치 지정
+        sqlSessionFactory.setConfigLocation(
+                applicationContext.getResource("classpath:/mybatis-config.xml")
+        );
+
+        // 커넥션 풀 설정 주입
         sqlSessionFactory.setDataSource(dataSource());
+
+        // 실제 SqlSessionFactory 객체 반환
         return (SqlSessionFactory) sqlSessionFactory.getObject();
     }
 
-    //트랜잭션 메니저 등록
-    // @Transction 사용 가능
+    /**
+     * 트랜잭션 매니저 등록
+     * - 스프링에서 @Transactional 사용 가능하게 함
+     */
     @Bean
-    public DataSourceTransactionManager transactionManager(){
+    public DataSourceTransactionManager transactionManager() {
+        // DataSource 기반 트랜잭션 매니저 생성
         DataSourceTransactionManager manager = new DataSourceTransactionManager(dataSource());
         return manager;
     }

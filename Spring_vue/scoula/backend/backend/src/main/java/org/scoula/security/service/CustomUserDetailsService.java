@@ -18,10 +18,15 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        // 데이터베이스에서 username에 해당하는 사용자 정보를 가져옴
         MemberVO vo = mapper.get(username);
-        if(vo == null){
-            throw new UsernameNotFoundException(username+"은 없는 id입니다.");
+
+        // 만약 사용자 정보가 존재하지 않으면 예외를 던짐
+        if(vo == null) {
+            throw new UsernameNotFoundException(username + "은 없는 id입니다.");
         }
+
+        // 사용자 정보를 기반으로 CustomUser 객체를 생성하여 반환
         return new CustomUser(vo);
     }
 }

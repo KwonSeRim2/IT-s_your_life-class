@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Log4j2
@@ -35,7 +36,7 @@ public class BoardServiceImpl implements BoardService {
         log.info("get........." + no);
         BoardDTO board = BoardDTO.of(mapper.get(no));
         // 해당 게시글이 없는경우 NoSuchElementException 예외 던짐
-        return Optional.ofNullable(board).orElseThrow();
+        return Optional.ofNullable(board).orElseThrow(NoSuchElementException::new);
     }
 
     @Transactional // 2개 이상의 insert문이 실행될수있으므로 트랜잭션 처리
@@ -50,7 +51,6 @@ public class BoardServiceImpl implements BoardService {
         if(files != null && !files.isEmpty()) {
             upload(vo.getNo(), files);
         }
-
         return get(vo.getNo());
     }
 
@@ -79,22 +79,27 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public BoardDTO update(BoardDTO board) {
-        log.info("update........." + board);
-        // update SQL 실행 후 변경된 행이 1개면 true 반환
+        log.info("update......" + board);
         mapper.update(board.toVo());
 
         return get(board.getNo());
     }
 
+    @Transactional
     @Override
     public BoardDTO delete(Long no) {
-        log.info("delete.........." + no);
-        // 삭제 SQL 실행후 삭제된 행이 1개면 true
-
+        log.info("delete...." + no);
         BoardDTO board = get(no);
 
+        // 해당 게시글의 첨부파일 목록 가져오기
+        List<BoardAttachmentVO> attachList = mapper.getAttachmentList(no);
+
+        // 첨부파일 목록 돌면서 첨부파일들 삭제
+        for (BoardAttachmentVO attach : attachList) {
+            mapper.deleteAttachment(attach.getNo());
+        }
+        // 게시글 삭제
         mapper.delete(no);
         return board;
-
     }
 }

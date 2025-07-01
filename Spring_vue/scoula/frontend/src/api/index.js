@@ -10,8 +10,8 @@ const instance = axios.create({
 instance.interceptors.request.use(
   (config) => {
     //jwt추출
-    const { getToken } = useAuthStore;
-    const token = getToken();
+    const auth = useAuthStore();
+    const token = auth.getToken();
 
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;

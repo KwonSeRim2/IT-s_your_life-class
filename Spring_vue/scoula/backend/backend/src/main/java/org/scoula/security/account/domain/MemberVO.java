@@ -9,8 +9,8 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class MemberVO {
     private String username;
@@ -19,5 +19,5 @@ public class MemberVO {
     private Date regDate;
     private Date updateDate;
 
-    private List<AuthVO> authList;//권한
+    private List<AuthVO> authList;  // 권한 목록, join 처리 필요
 }

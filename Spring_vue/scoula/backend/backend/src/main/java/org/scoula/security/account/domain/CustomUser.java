@@ -12,16 +12,13 @@ import java.util.Collection;
 public class CustomUser extends User {
     private MemberVO member;
 
-    public CustomUser(String username, String password,
-                      Collection<? extends GrantedAuthority> authorities
-    ) {
-        super(username,password, authorities);
+    // 일반 생성자: username, password, 권한 리스트 직접 전달
+    public CustomUser(String username, String password, Collection<? extends GrantedAuthority> authorities) {
+        super(username, password, authorities);  // 부모 클래스(User)의 생성자 호출
     }
 
-    public CustomUser(MemberVO vo){
-        super(vo.getUsername(), vo.getPassword(), vo.getAuthList());
-        this.member = vo; //전체 사용자 정보 보관
+    public CustomUser(MemberVO vo) {
+        super(vo.getUsername(), vo.getPassword(), vo.getAuthList());  // User 생성자 호출
+        this.member = vo;  // 전체 사용자 정보 보관
     }
-
-
 }

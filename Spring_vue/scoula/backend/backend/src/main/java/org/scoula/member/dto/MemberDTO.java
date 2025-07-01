@@ -1,11 +1,8 @@
 package org.scoula.member.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.scoula.security.account.domain.MemberVO;
 import org.springframework.web.multipart.MultipartFile;
+import lombok.*;
 
 import java.util.Date;
 import java.util.List;
@@ -20,22 +17,26 @@ public class MemberDTO {
     private Date regDate;
     private Date updateDate;
 
-    private MultipartFile avatar;
+    private MultipartFile avatar;           // 프로필 이미지
 
-    private List<String> authList; //권한 목록 join 처리 필요
+    private List<String> authList;          // 권한 목록
 
+    // VO → DTO 변환 (정적 메서드)
     public static MemberDTO of(MemberVO m) {
         return MemberDTO.builder()
-
                 .username(m.getUsername())
                 .email(m.getEmail())
                 .regDate(m.getRegDate())
                 .updateDate(m.getUpdateDate())
-                .authList(m.getAuthList().stream().map(a->a.getAuth()).toList())
+                .authList(
+                        m.getAuthList().stream()
+                                .map(a -> a.getAuth())     // VO에서 권한 문자열 추출
+                                .toList()
+                )
                 .build();
-
     }
 
+    // DTO → VO 변환 (인스턴스 메서드)
     public MemberVO toVO() {
         return MemberVO.builder()
                 .username(username)
@@ -43,6 +44,5 @@ public class MemberDTO {
                 .regDate(regDate)
                 .updateDate(updateDate)
                 .build();
-
     }
 }

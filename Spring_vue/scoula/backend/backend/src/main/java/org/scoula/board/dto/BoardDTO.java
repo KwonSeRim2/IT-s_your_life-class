@@ -18,28 +18,34 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ApiModel(description = "게시글 DTO")
+@ApiModel(description = "게시글 DTO") // Swagger 문서에서 이 클래스 설명 표시
 public class BoardDTO {
+
+    @ApiModelProperty(value = "업로드 파일 목록")
+    private List<MultipartFile> files = new ArrayList<>(); // 업로드된 실제 파일들
+
     @ApiModelProperty(value = "게시글 ID", example = "1")
     private Long no;
+
     @ApiModelProperty(value = "제목")
     private String title;
+
     @ApiModelProperty(value = "글 본문")
     private String content;
+
     @ApiModelProperty(value = "작성자")
     private String writer;
+
     @ApiModelProperty(value = "등록일")
     private Date regDate;
+
     @ApiModelProperty(value = "수정일")
     private Date updateDate;
 
-    // 첨부 파일
-    @ApiModelProperty(value = "첨부 파일 목록")
+    @ApiModelProperty(value = "첨부파일 목록")
     private List<BoardAttachmentVO> attaches;
 
-    @ApiModelProperty(value = "업로드 파일 목록")
-    List<MultipartFile> files = new ArrayList<>(); // 실제 업로드된 파일(Multipart) 목록
-
+    // ✅ VO → DTO 변환
     public static BoardDTO of(BoardVO vo) {
         return vo == null ? null : BoardDTO.builder()
                 .no(vo.getNo())
@@ -52,6 +58,7 @@ public class BoardDTO {
                 .build();
     }
 
+    // ✅ DTO → VO 변환
     public BoardVO toVo() {
         return BoardVO.builder()
                 .no(no)

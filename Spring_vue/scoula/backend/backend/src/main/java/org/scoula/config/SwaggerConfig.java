@@ -18,32 +18,30 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import java.util.List;
 
 @Configuration
-@EnableSwagger2 //swagger2 활성화
+@EnableSwagger2 // Swagger2 활성화
 public class SwaggerConfig {
-    private final String API_NAME = "Board API";
-    private final String API_VERSION = "1.0";
-    private final String API_DESCRIPTION = "Board API 명세서";
 
-
+    // 문서 기본 정보
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title(API_NAME)
-                .description(API_DESCRIPTION)
-                .version(API_VERSION)
+                .title("API 문서")
+                .description("Swagger + JWT 인증 설정")
+                .version("1.0")
                 .build();
     }
 
     @Bean
-    public Docket api(){
+    public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
-                //jwt인증
-                .securityContexts(List.of(this.securityContext())) // SecurityContext 설정
-                .securitySchemes(List.of(this.apiKey())) // ApiKey 설정
+                // JWT 인증 설정 추가
+                .securityContexts(List.of(this.securityContext()))   // SecurityContext 설정
+                .securitySchemes(List.of(this.apiKey()))            // ApiKey 설정
                 .select()
-                .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
+                .apis(RequestHandlerSelectors.withClassAnnotation(
+                        RestController.class)) // REST API만 문서화
                 .paths(PathSelectors.any())
                 .build()
-                .apiInfo(apiInfo());
+                .apiInfo(apiInfo()); // 문서 정보
     }
 
     // JWT SecurityContext 구성
@@ -53,14 +51,16 @@ public class SwaggerConfig {
                 .build();
     }
 
-
+    // 인증 범위 설정 (global로 전체 적용)
     private List<SecurityReference> defaultAuth() {
         AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
         authorizationScopes[0] = authorizationScope;
+
         return List.of(new SecurityReference("Authorization", authorizationScopes));
     }
-    // ApiKey 정의
+
+    // JWT를 위한 ApiKey 설정
     private ApiKey apiKey() {
         return new ApiKey("Authorization", "Authorization", "header");
     }
